@@ -1,0 +1,77 @@
+/* ─── PassengerDetails ───────────────────────────────────────── */
+.passenger-page {
+  padding: 2.5rem 1.5rem 3rem;
+  max-width: 760px;
+}
+
+.passenger-form {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--cream-dark);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+/* Select wrapper */
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper select { appearance: none; padding-right: 2rem; cursor: pointer; }
+
+.select-chevron {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  pointer-events: none;
+}
+
+/* Journey summary */
+.journey-summary {
+  background: var(--cream);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--cream-dark);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.js-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--text-mid);
+}
+
+.js-row strong { color: var(--text-dark); font-weight: 600; }
+
+.js-total {
+  font-size: 1.25rem;
+  color: var(--navy) !important;
+  font-weight: 800 !important;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .form-row { grid-template-columns: 1fr; }
+  .passenger-form { padding: 1.5rem; }
+}
