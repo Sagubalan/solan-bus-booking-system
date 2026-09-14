@@ -4,6 +4,15 @@ import axios from 'axios'
    API BASE URL
 ========================================================= */
 
+// Local development:
+//   http://localhost:5000/api
+//
+// Render production:
+//   VITE_API_URL will be provided through Render
+//
+// Example Render value:
+//   https://your-backend-name.onrender.com/api
+
 const BASE_URL =
   import.meta.env.VITE_API_URL ||
   'http://localhost:5000/api'
@@ -34,7 +43,7 @@ api.interceptors.request.use(
 
     /*
       Show booking request body in console.
-      Useful for debugging MongoDB booking errors.
+      Useful for debugging booking errors.
     */
 
     if (
@@ -65,9 +74,10 @@ api.interceptors.request.use(
 ========================================================= */
 
 api.interceptors.response.use(
-  /*
-    SUCCESS RESPONSE
-  */
+
+  /* =======================================================
+     SUCCESS RESPONSE
+  ======================================================= */
 
   (response) => {
     console.log(
@@ -88,9 +98,9 @@ api.interceptors.response.use(
     return response.data
   },
 
-  /*
-    ERROR RESPONSE
-  */
+  /* =======================================================
+     ERROR RESPONSE
+  ======================================================= */
 
   (error) => {
     console.error(
@@ -129,12 +139,6 @@ api.interceptors.response.use(
 
       /* ===================================================
          MONGOOSE VALIDATION ERRORS
-
-         Example:
-
-         errors: [
-           "passengerName is required"
-         ]
       =================================================== */
 
       if (
@@ -161,12 +165,26 @@ api.interceptors.response.use(
       }
 
       /* ===================================================
-         AXIOS STATUS SPECIFIC MESSAGE
+         STATUS SPECIFIC LOGGING
       =================================================== */
 
       if (status === 400) {
         console.error(
           '400 BAD REQUEST:',
+          serverData
+        )
+      }
+
+      if (status === 401) {
+        console.error(
+          '401 UNAUTHORIZED:',
+          serverData
+        )
+      }
+
+      if (status === 403) {
+        console.error(
+          '403 FORBIDDEN:',
           serverData
         )
       }
@@ -207,9 +225,14 @@ api.interceptors.response.use(
         error.request
       )
 
+      console.error(
+        '[CURRENT API BASE URL]',
+        BASE_URL
+      )
+
       return Promise.reject(
         new Error(
-          'Network Error: Backend server is not reachable. Please make sure the backend is running on port 5000.'
+          'Network Error: Backend server is not reachable. Please check the backend service and API URL.'
         )
       )
     }
@@ -238,24 +261,24 @@ api.interceptors.response.use(
 
 export const busAPI = {
 
-  /*
-    Get all active buses
-  */
+  /* -------------------------------------------------------
+     Get all active buses
+  ------------------------------------------------------- */
 
   getAll: () =>
     api.get('/buses'),
 
-  /*
-    Search buses
+  /* -------------------------------------------------------
+     Search buses
 
-    Example:
+     Example:
 
-    busAPI.search({
-      from: 'Chennai',
-      to: 'Madurai',
-      date: '2026-09-13'
-    })
-  */
+     busAPI.search({
+       from: 'Chennai',
+       to: 'Madurai',
+       date: '2026-09-13'
+     })
+  ------------------------------------------------------- */
 
   search: (params) =>
     api.get(
@@ -265,9 +288,9 @@ export const busAPI = {
       }
     ),
 
-  /*
-    Get one bus using MongoDB ObjectId
-  */
+  /* -------------------------------------------------------
+     Get one bus using MongoDB ObjectId
+  ------------------------------------------------------- */
 
   getById: (id) =>
     api.get(
@@ -281,9 +304,9 @@ export const busAPI = {
 
 export const bookingAPI = {
 
-  /*
-    Create booking in MongoDB
-  */
+  /* -------------------------------------------------------
+     Create booking in MongoDB
+  ------------------------------------------------------- */
 
   create: (data) => {
 
@@ -310,19 +333,18 @@ export const bookingAPI = {
     )
   },
 
-  /*
-    Get all bookings
-  */
+  /* -------------------------------------------------------
+     Get all bookings
+  ------------------------------------------------------- */
 
   getAll: () =>
     api.get(
       '/bookings'
     ),
 
-  /*
-    Get one booking
-    using booking ID
-  */
+  /* -------------------------------------------------------
+     Get one booking using booking ID
+  ------------------------------------------------------- */
 
   getById: (bookingId) =>
     api.get(
@@ -331,10 +353,9 @@ export const bookingAPI = {
       )}`
     ),
 
-  /*
-    Get bookings by
-    passenger phone
-  */
+  /* -------------------------------------------------------
+     Get bookings by passenger phone
+  ------------------------------------------------------- */
 
   getByPhone: (phone) =>
     api.get(
